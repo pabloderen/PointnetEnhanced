@@ -170,6 +170,8 @@ def train():
                'end_points': end_points}
 
         best_acc = -1
+        if os.path.isdir(LOG_DIR):
+            saver.restore(sess, tf.train.latest_checkpoint(LOG_DIR))
         for epoch in range(MAX_EPOCH):
             log_string('**** EPOCH %03d ****' % (epoch))
             sys.stdout.flush()
