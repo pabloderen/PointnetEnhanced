@@ -46,7 +46,7 @@ DECAY_STEP = FLAGS.decay_step
 DECAY_RATE = FLAGS.decay_rate
 
 MODEL = importlib.import_module("models."+FLAGS.model) # import network module
-MODEL_FILE = os.path.join(BASE_DIR, "models."+FLAGS.model+'.py')
+MODEL_FILE = os.path.join(BASE_DIR, "models/"+FLAGS.model+'.py')
 LOG_DIR = FLAGS.log_dir
 if not os.path.exists(LOG_DIR): os.mkdir(LOG_DIR)
 os.system('cp %s %s' % (MODEL_FILE, LOG_DIR)) # bkp of model def
