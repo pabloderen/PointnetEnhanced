@@ -162,7 +162,7 @@ def train():
         best_acc = -1
         if os.path.isdir(LOG_DIR):
             saver.restore(sess, tf.train.latest_checkpoint(LOG_DIR))
-            print("Model restored from file: %s" % save_path)
+            print("Model restored from file: %s" % LOG_DIR)
         for epoch in range(MAX_EPOCH):
             log_string('**** EPOCH %03d ****' % (epoch))
             sys.stdout.flush()
