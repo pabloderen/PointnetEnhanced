@@ -298,14 +298,17 @@ def eval_one_epoch(sess, ops, test_writer):
             total_correct_class[l] += np.sum((pred_val==l) & (batch_label==l) & (batch_smpw>0))
 
     for b in range(batch_label.shape[0]):
-        _, uvlabel, _ = pc_util.point_cloud_label_to_surface_voxel_label_fast(aug_data[b,batch_smpw[b,:]>0,:], np.concatenate((np.expand_dims(batch_label[b,batch_smpw[b,:]>0],1),np.expand_dims(pred_val[b,batch_smpw[b,:]>0],1)),axis=1), res=0.02)
-        total_correct_vox += np.sum((uvlabel[:,0]==uvlabel[:,1])&(uvlabel[:,0]>0))
-        total_seen_vox += np.sum(uvlabel[:,0]>0)
-        tmp,_ = np.histogram(uvlabel[:,0],range(22))
-        labelweights_vox += tmp
-        for l in range(NUM_CLASSES):
-                total_seen_class_vox[l] += np.sum(uvlabel[:,0]==l)
-                total_correct_class_vox[l] += np.sum((uvlabel[:,0]==l) & (uvlabel[:,1]==l))
+        pcloud = aug_data[b,batch_smpw[b,:]>0,:]
+        #check for null in aug_data query
+        if pcloud.any():
+            _, uvlabel, _ = pc_util.point_cloud_label_to_surface_voxel_label_fast(pcloud, np.concatenate((np.expand_dims(batch_label[b,batch_smpw[b,:]>0],1),np.expand_dims(pred_val[b,batch_smpw[b,:]>0],1)),axis=1), res=0.02)
+            total_correct_vox += np.sum((uvlabel[:,0]==uvlabel[:,1])&(uvlabel[:,0]>0))
+            total_seen_vox += np.sum(uvlabel[:,0]>0)
+            tmp,_ = np.histogram(uvlabel[:,0],range(22))
+            labelweights_vox += tmp
+            for l in range(NUM_CLASSES):
+                    total_seen_class_vox[l] += np.sum(uvlabel[:,0]==l)
+                    total_correct_class_vox[l] += np.sum((uvlabel[:,0]==l) & (uvlabel[:,1]==l))
 
     log_string('eval mean loss: %f' % (loss_sum / float(num_batches)))
     log_string('eval point accuracy vox: %f'% (total_correct_vox / float(total_seen_vox)))
