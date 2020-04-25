@@ -12,7 +12,7 @@ class ScannetDataset():
         self.split = split
         self.data_filename = os.path.join(self.root, 'scannet_%s.pickle'%(split))
         with open(self.data_filename,'rb') as fp:
-            self.scene_points_list = pickle.load(fp)
+            self.scene_points_list = pickle.load(fp, encoding="latin")
             self.semantic_labels_list = pickle.load(fp)
         if split=='train':
             labelweights = np.zeros(21)
@@ -68,7 +68,7 @@ class ScannetDatasetWholeScene():
         self.split = split
         self.data_filename = os.path.join(self.root, 'scannet_%s.pickle'%(split))
         with open(self.data_filename,'rb') as fp:
-            self.scene_points_list = pickle.load(fp)
+            self.scene_points_list = pickle.load(fp, encoding="latin")
             self.semantic_labels_list = pickle.load(fp)
         if split=='train':
             labelweights = np.zeros(21)
@@ -126,7 +126,7 @@ class ScannetDatasetVirtualScan():
         self.split = split
         self.data_filename = os.path.join(self.root, 'scannet_%s.pickle'%(split))
         with open(self.data_filename,'rb') as fp:
-            self.scene_points_list = pickle.load(fp)
+            self.scene_points_list = pickle.load(fp, encoding="latin")
             self.semantic_labels_list = pickle.load(fp)
         if split=='train':
             labelweights = np.zeros(21)
